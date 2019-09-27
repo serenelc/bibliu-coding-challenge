@@ -7,7 +7,7 @@ var BookSchema = new Schema(
   {
     title: {type: String, required: true},
     author: {type: String, required: true},
-    isbn: {type: String, required: true},
+    isbn: {type: String, required: true, unique: true},
     institutions: [{type: Schema.Types.ObjectId, ref: 'Institution'}]
   }
 );

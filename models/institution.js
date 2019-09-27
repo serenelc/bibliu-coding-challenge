@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var InstitutionSchema = new Schema(
   {
     name: {type: String, required: true, max: 100},
-    url: {type: String, max: 100},
+    url: {type: String},
     email_domain: {type: String, require: true, max: 100}
   }
 );
