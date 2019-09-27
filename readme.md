@@ -1,3 +1,14 @@
+#Helpful links
+- http://www.passportjs.org/docs/username-password/
+- https://codeforgeek.com/handle-get-post-request-express-4/
+- https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Template_primer
+- https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data
+- https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose
+- https://cloud.mongodb.com/v2/5d89b367d5ec13595d9ac6f4#metrics/replicaSet/5d89b429aa2dfe65b23ff717/explorer/bibliu/users/find
+- https://mongoosejs.com/docs/guide.html
+- https://mongoosejs.com/docs/api/model.html
+- https://github.com/omniti-labs/jsend
+
 # Express Coding Challenge
 The premise of this challenge is to see the approach you take to:
 - Use an ORM to interact with a simple database model
