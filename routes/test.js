@@ -24,7 +24,13 @@ router.get('/institution-list', function(req, res) {
 
 // GET request for list of all books.
 router.get('/book-list', function(req, res) {
-  res.send('NOT IMPLEMENTED: book list');
+  Book.find({}, 'title author institutions')
+    .populate('institutions')
+    .exec(function (err, list_books) {
+      if (err) { return next(err); }
+      //Successful, so render
+      res.render('book_list', { title: 'Book List', book_list: list_books });
+    });
 });
 
 // GET request to create a new user.
@@ -47,7 +53,7 @@ router.get('/', function(req, res) {
         Institution.countDocuments({}, callback);
     },
   }, function(err, results) {
-      res.render('index', { title: 'Local Library Home', error: err, data: results });
+      res.render('index', { title: 'BibliU Coding Challenge', error: err, data: results });
   });
 })
 
