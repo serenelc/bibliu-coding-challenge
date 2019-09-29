@@ -4,8 +4,6 @@ const path = require('path');
 const passport = require('passport');
 
 // app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', 'pug');
-
 app.set('view engine', 'pug')
 
 var mongoose = require('mongoose');

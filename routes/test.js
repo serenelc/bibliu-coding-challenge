@@ -5,6 +5,8 @@ var Book = require('../models/book');
 var User = require('../models/user');
 var Institution = require('../models/institution');
 
+var async = require('async');
+
 // GET request for list of all users.
 router.get('/user-list', function(req, res) {
   res.send('NOT IMPLEMENTED: user list');
@@ -15,8 +17,38 @@ router.get('/user/:id', function(req, res) {
     res.send('NOT IMPLEMENTED: single user');
   });
 
+// GET request for list of all institutions.
+router.get('/institution-list', function(req, res) {
+  res.send('NOT IMPLEMENTED: institution list');
+});
+
+// GET request for list of all books.
+router.get('/book-list', function(req, res) {
+  res.send('NOT IMPLEMENTED: book list');
+});
+
+// GET request to create a new user.
+router.get('/user/create', function(req, res) {
+  res.send('NOT IMPLEMENTED: single user');
+});
+
 router.get('/', function(req, res) {
-    res.render('index', { title: 'TEST', message: 'TESTING TESTING' })
+  async.parallel({
+    book_count: function(callback) {
+        Book.countDocuments({}, callback); // Pass an empty object as match condition to find all documents of this collection
+    },
+    user_count: function(callback) {
+        User.countDocuments({}, callback);
+    },
+    user_student_count: function(callback) {
+        User.countDocuments({role:'student'}, callback);
+    },
+    institution_count: function(callback) {
+        Institution.countDocuments({}, callback);
+    },
+  }, function(err, results) {
+      res.render('index', { title: 'Local Library Home', error: err, data: results });
+  });
 })
 
 module.exports = router;
