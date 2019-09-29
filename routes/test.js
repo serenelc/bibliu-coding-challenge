@@ -9,17 +9,44 @@ var async = require('async');
 
 // GET request for list of all users.
 router.get('/user-list', function(req, res) {
-  res.send('NOT IMPLEMENTED: user list');
+  User.find({}, 'name email role')
+  .exec(function (err, list_users) {
+    if (err) { return next(err); }
+    res.render('user_list', { title: 'User List', user_list: list_users });
+  });
 });
 
-// GET request for one user.
-router.get('/user/:id', function(req, res) {
-    res.send('NOT IMPLEMENTED: single user');
-  });
+// GET request for list of books authorised to a specific institution
+router.get('/institution/:id', function(req, res) {
+  async.parallel({
+    institution: function(callback) {
+        Institution.findById(req.params.id)
+          .exec(callback);
+    },
+
+    institution_books: function(callback) {
+        Book.find({ 'institutions': req.params.id })
+          .exec(callback);
+    },
+
+}, function(err, results) {
+    if (err) { return next(err); }
+    if (results.institution == null) {
+        var err = new Error('Institution not found');
+        err.status = 404;
+        return next(err);
+    }
+    res.render('books_by_institution', { title: 'Institution Detail', institution: results.institution, institution_books: results.institution_books } );
+});
+});
 
 // GET request for list of all institutions.
 router.get('/institution-list', function(req, res) {
-  res.send('NOT IMPLEMENTED: institution list');
+  Institution.find({}, 'name url')
+  .exec(function (err, list_institutions) {
+    if (err) { return next(err); }
+    res.render('institution_list', { title: 'Institution List', institution_list: list_institutions });
+  });
 });
 
 // GET request for list of all books.
@@ -28,7 +55,6 @@ router.get('/book-list', function(req, res) {
     .populate('institutions')
     .exec(function (err, list_books) {
       if (err) { return next(err); }
-      //Successful, so render
       res.render('book_list', { title: 'Book List', book_list: list_books });
     });
 });

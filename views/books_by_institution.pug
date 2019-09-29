@@ -1,0 +1,17 @@
+extends layout
+
+block content
+
+  h1 Institution: #{institution.name}
+  
+  div(style='margin-left:20px;margin-top:20px')
+
+    h4 Books
+    
+    dl
+      each book in institution_books
+        dt #{book.title}
+        dd author: #{book.author}, isbn: #{book.isbn}
+
+      else
+        p This genre has no books
