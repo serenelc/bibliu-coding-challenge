@@ -28,3 +28,4 @@ app.listen(3000, () => console.log(`Open http://localhost:3000 to see a response
 
 app.use('/home', home);
 app.use('/test', testRouter);
+app.use(express.static('public'))

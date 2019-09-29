@@ -1,9 +1,11 @@
 extends layout
 
 block content
+  script(src='/scripts/script.js')
+  
   h1 #{title}
 
-  form(method='POST' action='')
+  form
     div.form-group(style='display: flex; flex-direction: column;')
       label(for='name') Name:
       input#name.form-control(type='text' name='name' value=(undefined===user ? '' : user.name))
@@ -16,7 +18,7 @@ block content
         option(value=(undefined===role ? 'student' : user.role)) Student 
         option(value=(undefined===role ? 'academic' : user.role)) Academic
         option(value=(undefined===role ? 'administrator' : user.role)) Administrator
-    button.btn.btn-primary(type='submit') Submit
+    button.btn.btn-primary(type='submit' onclick=`sendNotification()`) Submit
   
   a(href='/home')
     button.btn.btn-secondary Back
