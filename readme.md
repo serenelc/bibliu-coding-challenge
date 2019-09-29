@@ -14,6 +14,7 @@
    - I tried implementing signing in authentication using the passport library (see the commented out code), however, I was unable to get it to work, so I have gone back to the none passport way of authenticating my signing in.
 - I need to hide my passwords so that they are not in the url of the post request when institution does not exist
 - I need to make sure the query strings in the urls aren't shown because if they are this means users can override the security and access other routes (as they now know what format the url takes)
+   - For both of the above maybe the use of session tokens or something along those lines would be the way forward? Haven't really used those before so unsure how exactly I would go about doing it, but I could store a variety of things related to the logged in user in the session token and use that instead of query parameters?
 
 # Express Coding Challenge
 The premise of this challenge is to see the approach you take to:
