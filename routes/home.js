@@ -10,68 +10,64 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var async = require('async');
         
-passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password'
-},
-function(username, password, done) {
-    console.log("hello???");
-    User.findOne({ "email": username }, function(err, user) {
-        if (err) { return done(err); }
-        if (!user) {
-            return done(null, false, { message: 'Email doesn\'t exist' });
-        }
-        if (!user.validPassword(password)) {
-            return done(null, false, { message: 'Incorrect password.' });
-        }
-        return done(null, user);
-        });
-    }
-));
+// passport.use(new LocalStrategy({
+//     usernameField: 'email',
+//     passwordField: 'password'
+// },
+// function(username, password, done) {
+//     console.log("hello???");
+//     User.findOne({ "email": username }, function(err, user) {
+//         if (err) { return done(err); }
+//         if (!user) {
+//             return done(null, false, { message: 'Email doesn\'t exist' });
+//         }
+//         if (!user.validPassword(password)) {
+//             return done(null, false, { message: 'Incorrect password.' });
+//         }
+//         return done(null, user);
+//         });
+//     }
+// ));
 
-router.post('/users/signin', function(req, res) {
-    console.log("post request");
-    passport.authenticate('local', { successRedirect: '/home/books?user=' + req.query.email,
-                                     failureRedirect: '/home/users/signin',
-                                     failureFlash: true })
-    }
-);
+// router.post('/users/signin', function(req, res) {
+//     console.log("post request");
+//     passport.authenticate('local', { successRedirect: '/home/books?user=' + req.query.email,
+//                                      failureRedirect: '/home/users/signin',
+//                                      failureFlash: true })
+//     }
+// );
 
 // get request to display signin form
 router.get('/users/signin', function(req, res) {
     console.log("sign in: ", req.query);
 
-    res.render('signin-user', { title: 'Sign In As An Existing User'});
+    if (Object.keys(req.query).length !== 0) {  
 
-    // if (Object.keys(req.query).length !== 0) {  
+        // try to login existing user
+        User.findOne({ 'email': req.query.email }, 'password')
+            .exec( function(err, password) {
 
-        //try to login existing user
-        // User.findOne({ 'email': req.query.email }, 'password')
-        //     .exec( function(err, password) {
-        //         console.log(password.password)
-        //         if (err) { 
-        //             console.log(err)
-        //             res.redirect('/home/users/signin');
-        //             console.log("unable to login. Please try again"); 
-        //         }
+                if (err) { 
+                    console.log(err)
+                    res.redirect('/home/users/signin');
+                    console.log("unable to login. Please try again"); 
+                }
 
-        //         if (!password) {
-        //             console.log("email doesn't exist");
-        //             // Email doesn't exist. Redirect to create user page.
-        //             res.redirect('/home/users/create');
-        //         }
+                if (!password) {
+                    console.log("email doesn't exist");
+                    res.redirect('/home/users/create');
+                }
                 
-        //         if (password.password === req.query.password) {
-        //             res.redirect('/home/books?user=' + req.query.email);
-        //         } else {
-        //             console.log(err)
-        //             res.redirect('/home/users/signin');
-        //             console.log("incorrect password. Please try again"); 
-        //         }
-        // });
-    // } else {
-    //     res.render('signin-user', { title: 'Sign In As An Existing User'});
-    // }
+                if (password.password === req.query.password) {
+                    res.redirect('/home/books?user=' + req.query.email);
+                } else {
+                    console.log(err)
+                    res.render('signin-user', { title: 'Sign In As An Existing User', errorMsg: 'Incorrect password. Please try again'});
+                }
+        });
+    } else {
+        res.render('signin-user', { title: 'Sign In As An Existing User'});
+    }
 })
 
 // get request to display create form
@@ -82,6 +78,7 @@ router.get('/users/create', function(req, res) {
         console.log("Attempt to add new user");
 
         //set default role as student because role doesn't get sent through for some reason.
+        //unsure why req.query.role doesn't work
         var user = new User (
             { name: req.query.name,
             email: req.query.email,

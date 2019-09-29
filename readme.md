@@ -1,4 +1,4 @@
-#Helpful links
+# Links I used for help
 - http://www.passportjs.org/docs/username-password/
 - https://codeforgeek.com/handle-get-post-request-express-4/
 - https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/Displaying_data/Template_primer
@@ -9,10 +9,11 @@
 - https://mongoosejs.com/docs/api/model.html
 - https://github.com/omniti-labs/jsend
 
-#To do
+# To do/discuss
 - I need to change my authentication to use passport js and respond using jsend
-- I need to hide my passwords so that they are not in the url of the post request
-- I need to hide my database login password
+   - I tried implementing signing in authentication using the passport library (see the commented out code), however, I was unable to get it to work, so I have gone back to the none passport way of authenticating my signing in.
+- I need to hide my passwords so that they are not in the url of the post request when institution does not exist
+- I need to make sure the query strings in the urls aren't shown because if they are this means users can override the security and access other routes (as they now know what format the url takes)
 
 # Express Coding Challenge
 The premise of this challenge is to see the approach you take to:
