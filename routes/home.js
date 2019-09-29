@@ -9,12 +9,69 @@ var async = require('async');
 
 // get request to display signin form
 router.get('/users/signin', function(req, res) {
-    res.send("TODO sign in user")
+    console.log(req.query);
+
+    if (Object.keys(req.query).length !== 0) {       
+        //try to login existing user
+        User.findOne({ 'email': req.query.email }, 'password')
+            .exec( function(err, password) {
+                console.log(password)
+                if (err) { 
+                    console.log(err)
+                    res.redirect('/home/users/signin');
+                    alert("unable to login. Please try again"); 
+                }
+
+                if (!password) {
+                    console.log("email doesn't exist");
+                    // Email doesn't exist. Redirect to create user page.
+                    res.redirect('/home/users/create');
+                }
+                
+                if (password === req.query.password) {
+                    res.redirect('/home/books?user=' + req.query.email);
+                } else {
+                    console.log(err)
+                    res.redirect('/home/users/signin');
+                    alert("incorrect password. Please try again"); 
+                }
+        });
+    } else {
+        res.render('signin-user', { title: 'Sign In As An Existing User'});
+    }
 })
 
 // get request to display list of books that the user has access to
 router.get('/books', function(req, res) {
-    res.send("TODO list of books for that user")
+    const email = req.query.user;
+    const domainStartIndex = email.indexOf("@") + 1;
+    const institution = email.substring(domainStartIndex, email.length);
+
+    console.log(institution);
+
+    async.parallel({
+        institution: function(callback) {
+            Institution.find({ name: institution})
+              .exec(callback);
+        },
+    
+        institution_books: function(callback) {
+            Book.find({institutions: "5d9087dc1c9d4400005d3897"})
+              .exec(callback);
+        },
+    }, function(err, results) {
+        if (err) { 
+            return next(err);
+        }
+
+        if (results.institution == null) {
+            var err = new Error('Institution not found');
+            err.status = 404;
+            return next(err);
+        }
+        res.render('books_by_institution', { title: 'You have access to the following books', institution: results.institution, institution_books: results.institution_books, 
+        username: email} );
+    });
 })
 
 // get request to display create form
@@ -24,10 +81,11 @@ router.get('/users/create', function(req, res) {
     if (Object.keys(req.query).length !== 0) {
         console.log("Attempt to add new user");
 
+        //set default role as student because role doesn't get sent through for some reason.
         var user = new User (
             { name: req.query.name,
             email: req.query.email,
-            role: "administrator",
+            role: "student",
             password: req.query.password
             }
         );
@@ -58,7 +116,7 @@ router.get('/users/create', function(req, res) {
                         alert("unable to create new user. Please try again");
                     }
                     // User saved. Redirect to list of books that the user has access to via their institution page.
-                    res.redirect('/home/books');
+                    res.redirect('/home/books?user=' + user.email);
                 });
             }
         });

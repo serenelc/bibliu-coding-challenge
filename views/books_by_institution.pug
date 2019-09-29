@@ -3,10 +3,12 @@ extends layout-test
 block content
 
   h1 Institution: #{institution.name}
+
+  h2 You are logged in as #{username}
   
   div(style='margin-left:20px;margin-top:20px')
 
-    h4 Books
+    h4 Books that your institution has access to
     
     dl
       each book in institution_books
@@ -14,4 +16,4 @@ block content
         dd author: #{book.author}, isbn: #{book.isbn}
 
       else
-        p This genre has no books
+        p This institution has no books
