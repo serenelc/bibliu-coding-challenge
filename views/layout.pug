@@ -9,20 +9,5 @@ html(lang='en')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js')
   body
     div(class='container-fluid')
-      div(class='row')
-        div(class='col-sm-2')
-          block sidebar
-            ul(class='sidebar-nav' style='margin-top: 20px; padding: 5px; list-style: none;')
-              li 
-                a(href='/test') Home
-              li 
-                a(href='/test/user-list') All users
-              li 
-                a(href='/test/institution-list') All institutions
-              li 
-                a(href='/test/book-list') All books
-              li 
-                a(href='/test/user/create') Create new user
-                
-        div(class='col-sm-10')
+      div(class='row' style='padding-left: 10%; padding-right: 10%; padding-top: 3%')
           block content

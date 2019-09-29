@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  h1 #{title}
+
+  form(method='POST' action='')
+    div.form-group(style='display: flex; flex-direction: column;')
+      label(for='name') Name:
+      input#name.form-control(type='text' name='name' value=(undefined===user ? '' : user.name))
+      label(for='email') Email:
+      input#email.form-control(type='text' name='email' value=(undefined===email ? '' : user.email))
+      label(for='password') Password:
+      input#password.form-control(type='text' name='password' value=(undefined===password ? '' : user.password))
+      label(for='role') Role:
+      select#role
+        option(value=(undefined===role ? 'student' : user.role)) Student 
+        option(value=(undefined===role ? 'academic' : user.role)) Academic
+        option(value=(undefined===role ? 'administrator' : user.role)) Administrator
+    button.btn.btn-primary(type='submit') Submit
+  
+  a(href='/home')
+    button.btn.btn-secondary Back
+
+  if errors 
+   ul
+    for error in errors
+     li!= error.msg

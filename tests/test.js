@@ -7,7 +7,7 @@ var Institution = require('../models/institution');
 
 var async = require('async');
 
-// GET request for list of all users.
+// test that I get a list of all users in my database.
 router.get('/user-list', function(req, res) {
   User.find({}, 'name email role')
   .exec(function (err, list_users) {
@@ -16,7 +16,7 @@ router.get('/user-list', function(req, res) {
   });
 });
 
-// GET request for list of books authorised to a specific institution
+// test that I get a list of books that a specific institution has access to
 router.get('/institution/:id', function(req, res) {
   async.parallel({
     institution: function(callback) {
@@ -40,7 +40,7 @@ router.get('/institution/:id', function(req, res) {
 });
 });
 
-// GET request for list of all institutions.
+// test that I get a list of all institutions
 router.get('/institution-list', function(req, res) {
   Institution.find({}, 'name url')
   .exec(function (err, list_institutions) {
@@ -49,7 +49,7 @@ router.get('/institution-list', function(req, res) {
   });
 });
 
-// GET request for list of all books.
+// test that I get a list of all the books
 router.get('/book-list', function(req, res) {
   Book.find({}, 'title author institutions')
     .populate('institutions')
@@ -57,11 +57,6 @@ router.get('/book-list', function(req, res) {
       if (err) { return next(err); }
       res.render('book_list', { title: 'Book List', book_list: list_books });
     });
-});
-
-// GET request to create a new user.
-router.get('/user/create', function(req, res) {
-  res.send('NOT IMPLEMENTED: single user');
 });
 
 router.get('/', function(req, res) {
@@ -79,7 +74,7 @@ router.get('/', function(req, res) {
         Institution.countDocuments({}, callback);
     },
   }, function(err, results) {
-      res.render('index', { title: 'BibliU Coding Challenge', error: err, data: results });
+      res.render('index-test', { title: 'BibliU Coding Challenge', error: err, data: results });
   });
 })
 

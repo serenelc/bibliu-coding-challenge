@@ -1,20 +1,25 @@
 extends layout
 
 block content
-  h1= title
-  p This is my submission for the BibiliU Express Coding Challenge. I mostly followed tutorials linked 
-    a(href='https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs') #[em here] 
-    | as I had not encountered the majority of these technologies before.
+    h1 #{title}
+    p 
+        | This is my submission for the BibiliU Express Coding Challenge. I mostly followed tutorials linked 
+        a(href='https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs') #[em here] 
+        | as I had not encountered the majority of these technologies before.
 
-  h1 Dynamic content
+    p(style='display: flex; justify-content: center;') 
+        a(href='/home/users/create')
+            button(style='background-color: #6767eb; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block;') New User
+        a(href='/home/users/signin')
+            button(style='background-color: #5bd5de; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block;') Existing User
 
-  if error
-    p Error getting dynamic content.
-  else
-    p The library has the following record counts:
+    if error
+        p Error getting database content.
+    else
+        p The database currently has the following record counts:
 
-    ul
-      li #[strong Books:] !{data.book_count}
-      li #[strong Student Users:] !{data.user_student_count} 
-      li #[strong Users:] !{data.user_count}
-      li #[strong Institutions:] !{data.institution_count}
+        ul
+            li #[strong Books:] !{data.book_count}
+            li #[strong Student Users:] !{data.user_student_count} 
+            li #[strong Users:] !{data.user_count}
+            li #[strong Institutions:] !{data.institution_count}
