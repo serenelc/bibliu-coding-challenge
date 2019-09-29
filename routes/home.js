@@ -9,17 +9,17 @@ var async = require('async');
 
 // get request to display signin form
 router.get('/users/signin', function(req, res) {
-    console.log(req.query);
+    console.log("sign in: ", req.query);
 
     if (Object.keys(req.query).length !== 0) {       
         //try to login existing user
         User.findOne({ 'email': req.query.email }, 'password')
             .exec( function(err, password) {
-                console.log(password)
+                console.log(password.password)
                 if (err) { 
                     console.log(err)
                     res.redirect('/home/users/signin');
-                    alert("unable to login. Please try again"); 
+                    console.log("unable to login. Please try again"); 
                 }
 
                 if (!password) {
@@ -28,12 +28,12 @@ router.get('/users/signin', function(req, res) {
                     res.redirect('/home/users/create');
                 }
                 
-                if (password === req.query.password) {
+                if (password.password === req.query.password) {
                     res.redirect('/home/books?user=' + req.query.email);
                 } else {
                     console.log(err)
                     res.redirect('/home/users/signin');
-                    alert("incorrect password. Please try again"); 
+                    console.log("incorrect password. Please try again"); 
                 }
         });
     } else {
@@ -47,36 +47,42 @@ router.get('/books', function(req, res) {
     const domainStartIndex = email.indexOf("@") + 1;
     const institution = email.substring(domainStartIndex, email.length);
 
-    console.log(institution);
-
     async.parallel({
         institution: function(callback) {
-            Institution.find({ name: institution})
+            Institution.find({ email_domain: institution})
               .exec(callback);
         },
-    
-        institution_books: function(callback) {
-            Book.find({institutions: "5d9087dc1c9d4400005d3897"})
-              .exec(callback);
-        },
-    }, function(err, results) {
+    }, function(err, institution) {
         if (err) { 
             return next(err);
         }
 
-        if (results.institution == null) {
+        if (institution.institution == null) {
             var err = new Error('Institution not found');
             err.status = 404;
             return next(err);
         }
-        res.render('books_by_institution', { title: 'You have access to the following books', institution: results.institution, institution_books: results.institution_books, 
-        username: email} );
+        
+        async.parallel({
+            institution_books: function(callback) {
+                Book.find({institutions: institution.institution[0].id})
+                  .exec(callback);
+            },
+        }, function(err, books) {
+            if (err) { 
+                return next(err);
+            }
+            // console.log(books.institution_books)
+            res.render('books', { title: 'You have access to the following books', institution: institution.institution[0], institution_books: books.institution_books, 
+            username: email} );
+        })
+
     });
 })
 
 // get request to display create form
 router.get('/users/create', function(req, res) {
-    console.log(req.query);
+    console.log("create: ", req.query);
 
     if (Object.keys(req.query).length !== 0) {
         console.log("Attempt to add new user");

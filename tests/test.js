@@ -12,7 +12,7 @@ router.get('/user-list', function(req, res) {
   User.find({}, 'name email role')
   .exec(function (err, list_users) {
     if (err) { return next(err); }
-    res.render('user_list', { title: 'User List', user_list: list_users });
+    res.render('test/user_list', { title: 'User List', user_list: list_users });
   });
 });
 
@@ -36,7 +36,7 @@ router.get('/institution/:id', function(req, res) {
         err.status = 404;
         return next(err);
     }
-    res.render('books_by_institution', { title: 'Institution Detail', institution: results.institution, institution_books: results.institution_books } );
+    res.render('test/books_by_institution', { title: 'Institution Detail', institution: results.institution, institution_books: results.institution_books } );
 });
 });
 
@@ -45,7 +45,7 @@ router.get('/institution-list', function(req, res) {
   Institution.find({}, 'name url')
   .exec(function (err, list_institutions) {
     if (err) { return next(err); }
-    res.render('institution_list', { title: 'Institution List', institution_list: list_institutions });
+    res.render('test/institution_list', { title: 'Institution List', institution_list: list_institutions });
   });
 });
 
@@ -55,7 +55,7 @@ router.get('/book-list', function(req, res) {
     .populate('institutions')
     .exec(function (err, list_books) {
       if (err) { return next(err); }
-      res.render('book_list', { title: 'Book List', book_list: list_books });
+      res.render('test/book_list', { title: 'Book List', book_list: list_books });
     });
 });
 
@@ -74,7 +74,7 @@ router.get('/', function(req, res) {
         Institution.countDocuments({}, callback);
     },
   }, function(err, results) {
-      res.render('index-test', { title: 'BibliU Coding Challenge', error: err, data: results });
+      res.render('test/index-test', { title: 'BibliU Coding Challenge', error: err, data: results });
   });
 })
 

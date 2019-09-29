@@ -11,13 +11,5 @@ var UserSchema = new Schema(
   }
 );
 
-// Virtual for user's email domain
-UserSchema
-.virtual('email_domain')
-.get(function () {
-    const domainStartIndex = this.email.indexOf("@") + 1;
-    return this.email.substring(domainStartIndex, this.email.length);
-});
-
 //Export model
 module.exports = mongoose.model('User', UserSchema);

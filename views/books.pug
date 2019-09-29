@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    div(class='row')
+    div(class='col-sm-2')
+        a(href='/home')
+            button.btn.btn-primary(style='margin-top: 20px; padding: 5px;' type='signout') Signout
+            
+    div(class='col-sm-10')
+        h1 Institution: #{institution.name}
+
+        h2 You are logged in as #{username}
+        
+        div(style='margin-left:20px;margin-top:20px')
+
+            h4 Books that your institution has access to
+            
+            dl
+            each book in institution_books
+                dt #{book.title}
+                dd author: #{book.author}, isbn: #{book.isbn}
+
+            else
+                p This institution has no books
