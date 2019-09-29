@@ -7,11 +7,12 @@ block content
 
   form
     div.form-group(style='display: flex; flex-direction: column;')
-      label(for='email') Email:
-      input#email.form-control(type='text' name='email' value=(undefined===email ? '' : user.email))
-      label(for='password') Password:
-      input#password.form-control(type='text' name='password' value=(undefined===password ? '' : user.password))
-    button.btn.btn-primary(type='submit' onclick=`createUser()`) Sign In
+      form(action = "/signin" method="post")
+        label(for = 'email') Email:
+        input(id = 'email' type='text' name='email' value=(undefined===email ? '' : user.email))
+        label(for = 'password') Password:
+        input(id = 'password' type="password" name='password' value=(undefined===password ? '' : user.password))
+        button.btn.btn-primary(type='submit') Sign In
   
   a(href='/home')
     button.btn.btn-secondary Back

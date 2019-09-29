@@ -1,13 +1,15 @@
 const express = require('express');
 const app = express();
-const path = require('path');
-const passport = require('passport');
 
-// app.set('views', path.join(__dirname, 'views'));
+require('dotenv').config();
+
+const username = process.env.MONGO_USERNAME;
+const password = process.env.MONGO_PASSWORD;
+
 app.set('view engine', 'pug')
 
 var mongoose = require('mongoose');
-var mongoDB = 'mongodb+srv://serenelc:EMfaf14307@testcluster-brf3n.mongodb.net/bibliu?retryWrites=true&w=majority';
+var mongoDB = 'mongodb+srv://'+ username + ':' + password + '@testcluster-brf3n.mongodb.net/bibliu?retryWrites=true&w=majority';
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
@@ -17,12 +19,6 @@ var home = require('./routes/home.js');
 var testRouter = require('./tests/test');
 
 app.get('/', index);
-
-// app.get('/', function (req, res) {
-//     res.render('index', { title: 'Hey', message: 'Hello there!' })
-// })
-
-// app.post('/login', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/books' }));
 
 app.listen(3000, () => console.log(`Open http://localhost:3000 to see a response.`));
 

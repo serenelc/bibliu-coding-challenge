@@ -9,6 +9,11 @@
 - https://mongoosejs.com/docs/api/model.html
 - https://github.com/omniti-labs/jsend
 
+#To do
+- I need to change my authentication to use passport js and respond using jsend
+- I need to hide my passwords so that they are not in the url of the post request
+- I need to hide my database login password
+
 # Express Coding Challenge
 The premise of this challenge is to see the approach you take to:
 - Use an ORM to interact with a simple database model

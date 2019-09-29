@@ -2,8 +2,11 @@ extends layout
 
 block content
   script(src='/scripts/script.js')
-  
+
   h1 #{title}
+
+  if errorMsg
+    h2(style='color: red') #{errorMsg}
 
   form
     div.form-group(style='display: flex; flex-direction: column;')
@@ -12,7 +15,7 @@ block content
       label(for='email') Email:
       input#email.form-control(type='text' name='email' value=(undefined===email ? '' : user.email))
       label(for='password') Password:
-      input#password.form-control(type='text' name='password' value=(undefined===password ? '' : user.password))
+      input#password.form-control(type="password" name='password' value=(undefined===password ? '' : user.password))
       label(for='role') Role:
       select#role
         option(value=(undefined===role ? 'student' : user.role)) Student 

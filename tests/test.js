@@ -31,7 +31,7 @@ router.get('/institution/:id', function(req, res) {
 
 }, function(err, results) {
     if (err) { return next(err); }
-    if (results.institution == null) {
+    if (results.institution.length <= 0) {
         var err = new Error('Institution not found');
         err.status = 404;
         return next(err);
